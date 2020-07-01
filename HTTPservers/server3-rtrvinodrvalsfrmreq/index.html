@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Page Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" media="screen" href="main.css" />
+    <script src="main.js"></script>
+</head>
+<body>
+<header>
+    {{if .}}
+    <ul>
+        <li>{{.Method}}</li>
+        <li>{{.Contentlength}}</li>
+        <li>{{.Host}}</li>
+        <li>{{.RemoteAddr}}</li>
+        <li>{{.RequestURI}}</li>
+        <li>{{.URL}}</li>
+    </ul>
+    {{end}}
+
+    <big><b>Header ---------</b></big>
+    {{if .}}
+    {{range $key, $val := .Header}}
+    Header key : {{$key}}
+    {{range $val}}
+    <ul>
+        Header values : 
+        <li>{{.}}</li>
+    </ul>
+    {{end}}
+    {{end}}
+    {{end}}
+
+    <big><b>TransferEncoding ---------</b></big>
+    {{if .}}
+    {{range $key, $val := .TransferEncoding}}
+    TransferEncoding key : {{$key}}
+    <ul>
+        TransferEncoding value(s) : 
+        <li>{{$val}}</li>
+    </ul>
+    {{end}}
+    {{end}}
+
+    <big><b>Trailer ---------</b></big>
+    {{if .}}
+    {{range $key, $val := .Trailer}}
+    Trailer key : {{$key}}
+    {{range $val}}
+    <ul>
+        Trailer values : 
+        <li>{{.}}</li>
+    </ul>
+    {{end}}
+    {{end}}
+    {{end}}
+</header>
+<p>
+    <form action="/" method="POST">
+        <input type="text" placeholder="enter name" name="surname">
+        <input type="submit" name="submit-button" value="enter">
+    </form>
+</p>
+</body>
+</html>

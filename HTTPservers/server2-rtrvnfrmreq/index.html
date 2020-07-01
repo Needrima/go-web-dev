@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Page Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+    {{if .}}
+    {{range $key, $value := .}} 
+    variable (Take name field in input tag) <big>{{$key}}</big>
+    {{range $value}}<li>{{.}}</li>{{end}}{{end}}
+    {{end}}
+
+    <form action="/?surname=Oyebode" method="POST">
+        <input type="text" placeholder="enter name" name="surname">
+        <input type="submit" name="submit-button" value="enter">
+    </form>
+</body>
+</html>

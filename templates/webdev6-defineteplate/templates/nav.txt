@@ -1,0 +1,62 @@
+{{define "Navigation"}}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Page Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Header Template</title>
+    <style>
+        body{
+            padding: 0;
+            margin: 0;
+        }
+        ul {
+            background-color: gray;
+            position: fixed;
+            height:auto;
+            padding: 0;
+            width: 30%;
+            margin: 0;
+            font-size: 5em;
+            float: left;
+        }
+        li a {
+            display: block;
+            color: black;
+            text-decoration:none; 
+        }
+        li a.active{
+            color: white;
+            background-color:turquoise; 
+        }
+        li a:hover:not(.active){
+            color: tomato;
+            background-color: springgreen;
+        }
+    </style>
+</head>
+<body>
+    <ul>
+        <li><a href="Index.html" class="active">Home</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        <li><a href="about.html">About</a></li>
+    </ul>
+    <div style="margin-left: 30%; font-size: 4em">
+        TEXT <br>
+        TEXT <br>
+        TEXT<br>
+        TEXT<br>
+        TEXT<br>
+        TEXT<br>
+        TEXT<br>
+        TEXT<br>
+        TEXT<br>
+        TEXT<br>
+        TEXT<br>
+        The Life Expectancy of Nigerians: {{.}}
+    </div>
+</body>
+</html>
+{{end}}
