@@ -1,0 +1,5 @@
+In states, when data can be passed through the URL or through the form body Payload.
+If the forms request method is GET, data is passed through the URL but if the forms request method is POST, 
+data is passed through the body(payload)
+POST          GET
+BODY          URL

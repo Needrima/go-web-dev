@@ -8,7 +8,7 @@ import (
 type customhandler bool
 
 func (m customhandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	
+
 }
 
 func main() {

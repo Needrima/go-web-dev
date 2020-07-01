@@ -3,8 +3,8 @@ package main
 import (
 	"log"
 	"net/http"
-	"text/template"
 	"net/url"
+	"text/template"
 )
 
 var tpl *template.Template

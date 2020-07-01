@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Login</title>
+</head>
+<body>
+    <form action="/foo" method="POST">
+        <big>Name: </big> <input type="text" name="name"> <br>
+        <big>Customer ID: </big> <input type="text" name="ID"><br>
+        <big>Subscription Status: </big> <input type="checkbox" name="sub"><br>
+        <button type="submit">Login</button>
+    </form> <br>
+<p>
+    <h3>Name: {{.Name}}</h3><br>
+    <h3>Customer ID: {{.CID}}</h3><br>
+    <h3>Subscription Status: {{.Status}}</h3><br>
+</p>
+</body>
+</html>
