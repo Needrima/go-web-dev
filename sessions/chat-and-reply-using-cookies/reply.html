@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Reply</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+    {{if .}}
+    <div>{{.Chat}}</div>
+    <hr>
+    <div>
+        Reply chat...
+        <p>{{.Reply}}</p> <br><br>
+        <form action="/reply" method="POST">
+            <textarea name="reply" id="" cols="30" rows="10">Reply...</textarea>
+            <button type="submit">Reply</button>
+        </form>
+    </div>
+    {{end}}
+</body>
+</html>
