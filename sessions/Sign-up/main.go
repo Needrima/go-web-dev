@@ -5,14 +5,13 @@ import (
 	"github.com/satori/go.uuid"
 	"text/template"
 	"net/http"
-	"strconv"
+	"regexp"
 )
 
 var tpl *template.Template
 
 type user struct {
 	Sname, Fname, Oname, Email, Username, Password string
-	Age                                            int
 }
 
 var sessiondb = map[string]string{}
@@ -48,13 +47,9 @@ func signup(w http.ResponseWriter, r *http.Request) {
 		em := r.FormValue("email")
 		un := r.FormValue("uname")
 		pw := r.FormValue("pword")
-		ag, err := strconv.Atoi(r.FormValue("age")) //convert age to int
-		if err != nil {                             //Error occurs when text is passed into age field
-			http.Error(w, "Age field allows numbers only", http.StatusBadRequest)
-			http.Redirect(w, r, "/signup", http.StatusSeeOther)
-			return
-		} else if ag < 15 { //Age restriction
-			http.Error(w, "Age requirement not met", http.StatusBadRequest)
+		match, _ := regexp.MatchString("[a-zA-Z]", sn) //check if sn contains only englich texts
+		if !match{
+			http.Error(w, "Only english alphabets are allowed", http.StatusBadRequest)
 			http.Redirect(w, r, "/signup", http.StatusSeeOther)
 			return
 		}
@@ -76,7 +71,7 @@ func signup(w http.ResponseWriter, r *http.Request) {
 		http.SetCookie(w, cookie)
 
 		//create user
-		u := user{sn, fn, on, em, un, pw, ag}
+		u := user{sn, fn, on, em, un, pw}
 
 		//print user info
 		fmt.Println("User info:", u)
