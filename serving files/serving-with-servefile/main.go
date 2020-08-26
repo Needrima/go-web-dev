@@ -25,9 +25,9 @@ func Gowimage(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
-	http.HandleFunc("/", Image)             // serves God of war image
+	http.HandleFunc("/", Image)                  // serves God of war image
 	http.HandleFunc("/God of war.jpg", Gowimage) // serves God of war image
-	http.HandleFunc("/gearimg/", Gearimage) //when called, serves Gear of war image
-	
+	http.HandleFunc("/gearimg/", Gearimage)      //when called, serves Gear of war image
+
 	log.Fatalln(http.ListenAndServe(":8080", nil))
 }

@@ -34,9 +34,9 @@ func main() {
 	http.HandleFunc("/read", read)
 	http.Handle("/favicon.ico", http.NotFoundHandler())
 
-	server := http.Server {
-		Addr : ":8080",
-		Handler : nil,
+	server := http.Server{
+		Addr:    ":8080",
+		Handler: nil,
 	}
 	log.Fatalln(server.ListenAndServe())
 	//the above is same as log.Fatalln(http.ListenAndServe(":8080", nil))

@@ -3,9 +3,9 @@ package main
 import (
 	"fmt"
 	"github.com/satori/go.uuid"
-	"text/template"
 	"net/http"
 	"regexp"
+	"text/template"
 )
 
 var tpl *template.Template
@@ -48,7 +48,7 @@ func signup(w http.ResponseWriter, r *http.Request) {
 		un := r.FormValue("uname")
 		pw := r.FormValue("pword")
 		match, _ := regexp.MatchString("[a-zA-Z]", sn) //check if sn contains only englich texts
-		if !match{
+		if !match {
 			http.Error(w, "Only english alphabets are allowed", http.StatusBadRequest)
 			http.Redirect(w, r, "/signup", http.StatusSeeOther)
 			return

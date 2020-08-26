@@ -2,8 +2,8 @@ package main
 
 import (
 	// "html/template"
-	"net/http"
 	"fmt"
+	"net/http"
 )
 
 // var tpl = template.Must(template.ParseFiles("index.html"))
@@ -19,7 +19,7 @@ func InceptionImage(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
-	http.HandleFunc("/", Root) //path must be same with image path on line 13
+	http.HandleFunc("/", Root)                        //path must be same with image path on line 13
 	http.HandleFunc("/inception.jpg", InceptionImage) //path can also be "/inception"
 	//either of the two paths above serves the image
 	http.ListenAndServe(":8080", nil)

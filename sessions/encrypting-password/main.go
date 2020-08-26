@@ -3,18 +3,18 @@ package main
 import (
 	"fmt"
 	"github.com/satori/go.uuid"
-	"text/template"
+	"golang.org/x/crypto/bcrypt"
 	"net/http"
 	"strconv"
-	"golang.org/x/crypto/bcrypt"
+	"text/template"
 )
 
 var tpl *template.Template
 
 type user struct {
 	Sname, Fname, Oname, Email, Username string
-	Age                                            int
-	Password []byte
+	Age                                  int
+	Password                             []byte
 }
 
 var sessiondb = map[string]string{}

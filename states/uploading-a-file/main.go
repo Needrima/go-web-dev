@@ -22,7 +22,7 @@ func foo(w http.ResponseWriter, r *http.Request) {
 	//declare a varable to convert file to string
 	var s string
 
-	if r.Method == http.MethodPost {	
+	if r.Method == http.MethodPost {
 
 		//Call r.FormFile which returns a file, a header and an error
 		file, header, err := r.FormFile("upload")

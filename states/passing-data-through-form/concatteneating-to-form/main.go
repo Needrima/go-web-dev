@@ -14,7 +14,7 @@ func foo(w http.ResponseWriter, r *http.Request) {
             	Comment Here...
         	</textarea>
         	<button type="submit">Comment</button>
-    	</form> <br>`+ comment)
+    	</form> <br>`+comment)
 }
 
 func main() {
@@ -22,4 +22,4 @@ func main() {
 	http.ListenAndServe(":8080", nil)
 }
 
-//If the request method is changed to GET, the message will show in the URL after sunmission. 
+//If the request method is changed to GET, the message will show in the URL after sunmission.

@@ -23,5 +23,5 @@ func main() {
 	http.ListenAndServe(":8908", nil)
 }
 
-//running /red gives the req method for both paths first 
+//running /red gives the req method for both paths first
 //running a second time gives the req method for "/"" only cos of statusmovedpermanently

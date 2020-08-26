@@ -13,6 +13,7 @@ var tpl *template.Template
 type user struct {
 	Username, Firstname, Othername string
 }
+
 //Both database variables below are global scope so they can be called in different functions
 var sessiondb = map[string]string{} // maps session id to user id
 var userdb = map[string]user{}      // maps user id to user
@@ -47,7 +48,7 @@ func foo(w http.ResponseWriter, r *http.Request) {
 		u = user{un, f, o} //create a user from the form data that is to be passed into the index template on line 48
 		//this is where the storage happens
 		sessiondb[cookie.Value] = un // map the value of the username to the cookie value since they are both unique
-		userdb[un] = u // map the value of the user info to the username since username is unique
+		userdb[un] = u               // map the value of the user info to the username since username is unique
 	}
 	tpl.ExecuteTemplate(w, "index.html", u) //pass the user info on line 45 to the index template
 }
@@ -64,7 +65,7 @@ func bar(w http.ResponseWriter, r *http.Request) {
 		http.Redirect(w, r, "/foo", http.StatusSeeOther)
 		return
 	}
-	user := userdb[uname] //search for the user info using the unmae in the user db
+	user := userdb[uname]                     //search for the user info using the unmae in the user db
 	tpl.ExecuteTemplate(w, "home.html", user) //pass the user info into the home index
 }
 
