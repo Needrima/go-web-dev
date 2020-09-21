@@ -34,7 +34,6 @@ func LoggedIn(r *http.Request) bool { //to check if user is already logged in
 
 func signup(w http.ResponseWriter, r *http.Request) {
 	if LoggedIn(r) { //User cannot signup when already logged in
-		http.Error(w, "You are logged in already", http.StatusBadRequest)
 		http.Redirect(w, r, "/", http.StatusSeeOther)
 		return
 	}
@@ -49,7 +48,6 @@ func signup(w http.ResponseWriter, r *http.Request) {
 		pw := r.FormValue("pword")
 		match, _ := regexp.MatchString("[a-zA-Z]", sn) //check if sn contains only englich texts
 		if !match {
-			http.Error(w, "Only english alphabets are allowed", http.StatusBadRequest)
 			http.Redirect(w, r, "/signup", http.StatusSeeOther)
 			return
 		}
@@ -57,7 +55,6 @@ func signup(w http.ResponseWriter, r *http.Request) {
 		//check if password already exist
 		_, ok := userdb[pw]
 		if ok {
-			http.Error(w, "Password taken by another user", http.StatusInternalServerError)
 			http.Redirect(w, r, "/", http.StatusTemporaryRedirect)
 			return
 		}
