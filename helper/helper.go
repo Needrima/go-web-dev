@@ -8,6 +8,15 @@ import (
 	"time"
 )
 
+func CheckInSlice(xs []string, s string) (int, bool) {
+	for i, v := range xs {
+		if v == s {
+			return i, true
+		}
+	}
+	return -1, false
+}
+
 func CheckName(name string) bool {
 	//check length of name
 	name_length := len(name) < 3
