@@ -5,8 +5,7 @@ import (
 	"html/template"
 	"io/ioutil"
 	"net/http"
-	"os"
-	"path/filepath"
+	"strings"
 )
 
 var tpl *template.Template
@@ -45,16 +44,17 @@ func foo(w http.ResponseWriter, r *http.Request) {
 		//convert bs to string
 		s = string(bs)
 
-		// to write uploaded files back to a file
-		filecontent := filepath.Join("./useruploads/", header.Filename)
+		//get file extension
+		ext := strings.Split(header.Filename, ".")[1]
 
-		//create a new file to store filecontent
-		filedst, err := os.Create(filecontent)
+		//create tempfile to store file
+		tf, err := ioutil.TempFile("uploads", "files-*."+ext)
 		if err != nil {
-			http.Error(w, "Error Creating file to store uploads", http.StatusNotFound)
+			fmt.Println("Error creating tempfile:", err)
 		}
-		defer filedst.Close()
-		filedst.Write(bs)
+		defer tf.Close()
+
+		tf.Write(bs)
 	}
 	//write s back to the template
 	tpl.Execute(w, s)
