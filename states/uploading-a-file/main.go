@@ -3,10 +3,10 @@ package main
 import (
 	"fmt"
 	"html/template"
+	_ "io"
 	"io/ioutil"
 	"net/http"
 	"strings"
-	_"io"
 )
 
 var tpl *template.Template
@@ -16,9 +16,6 @@ func init() {
 }
 
 func foo(w http.ResponseWriter, r *http.Request) {
-	// set header
-	w.Header().Set("Content-Type", "text/html; charset=utmpfu-8")
-
 	//declare a varable to convert file to string
 	var s string
 
@@ -30,11 +27,6 @@ func foo(w http.ResponseWriter, r *http.Request) {
 			http.Error(w, "Error finding file", http.StatusBadRequest)
 		}
 		defer file.Close()
-
-		//print variables to terminal
-		fmt.Println(file)
-		fmt.Println(header)
-		fmt.Println(err)
 
 		//call ioutil readall to read from uploaded file
 		bs, err := ioutil.ReadAll(file)
@@ -54,7 +46,7 @@ func foo(w http.ResponseWriter, r *http.Request) {
 			fmt.Println("Error creating tempfile:", err)
 		}
 		defer tmpfile.Close()
-
+ 
 		tmpfile.Write(bs) //or io.Copy(tmpfile, file)
 	}
 	//write s back to the template
