@@ -6,6 +6,7 @@ import (
 	"io/ioutil"
 	"net/http"
 	"strings"
+	_"io"
 )
 
 var tpl *template.Template
@@ -54,7 +55,7 @@ func foo(w http.ResponseWriter, r *http.Request) {
 		}
 		defer tmpfile.Close()
 
-		tmpfile.Write(bs)
+		tmpfile.Write(bs) //or io.Copy(tmpfile, file)
 	}
 	//write s back to the template
 	tpl.Execute(w, s)
