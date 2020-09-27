@@ -16,7 +16,7 @@ func init() {
 
 func foo(w http.ResponseWriter, r *http.Request) {
 	// set header
-	w.Header().Set("Content-Type", "text/html; charset=utf-8")
+	w.Header().Set("Content-Type", "text/html; charset=utmpfu-8")
 
 	//declare a varable to convert file to string
 	var s string
@@ -48,13 +48,13 @@ func foo(w http.ResponseWriter, r *http.Request) {
 		ext := strings.Split(header.Filename, ".")[1]
 
 		//create tempfile to store file
-		tf, err := ioutil.TempFile("uploads", "files-*."+ext)
+		tmpfile, err := ioutil.TempFile("uploads", "file-*."+ext)
 		if err != nil {
 			fmt.Println("Error creating tempfile:", err)
 		}
-		defer tf.Close()
+		defer tmpfile.Close()
 
-		tf.Write(bs)
+		tmpfile.Write(bs)
 	}
 	//write s back to the template
 	tpl.Execute(w, s)
