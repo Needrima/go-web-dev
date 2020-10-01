@@ -17,6 +17,15 @@ func CheckInSlice(xs []string, s string) (int, bool) {
 	return -1, false
 }
 
+func Found(xexp []string, exp string) bool {
+	for _, v := range xexp {
+		if v == exp {
+			return true
+		}
+	}
+	return false
+}
+
 func CheckName(name string) bool {
 	//check length of name
 	name_length := len(name) < 3
