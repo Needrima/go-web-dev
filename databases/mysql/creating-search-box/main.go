@@ -22,7 +22,7 @@ func init() {
 
 func main() {
 	var err error
-	db, err = sql.Open("mysql", "root:Ademola15@tcp(127.0.0.1:3306)/usersdb")
+	db, err = sql.Open("mysql", "root:password@tcp(127.0.0.1:3306)/usersdb")
 	if err != nil {
 		fmt.Println("Could not connect to mysql workbench:", err)
 	}
