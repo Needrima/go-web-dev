@@ -28,7 +28,7 @@ func main() {
 	}
 	defer db.Close()
 
-	err = db.Ping() 
+	err = db.Ping()
 	if err != nil {
 		fmt.Println("error, pinging", err)
 	}
@@ -41,20 +41,24 @@ func main() {
 func Search(w http.ResponseWriter, r *http.Request) {
 	if r.Method == http.MethodGet {
 		tpl.Execute(w, nil)
-	}else {
-	// name := r.FormValue("search")
+	} else {
+		name := r.FormValue("search")
 
-	query := `select * from signup where Firstname = "Amirdeen";`
+		// query :=  `select * from signup where Firstname = '` + name + `';`
+		//row := db.QueryRow(query)
 
-	row := db.QueryRow(query)
+		query := `select * from signup where Firstname = ?;`
 
-	var us user
+		row := db.QueryRow(query, name) 
 
-	err := row.Scan(&us.Firstname, &us.Surname, &us.ID)
-	if err != nil {
-		fmt.Println("Error getting row", err)
+		var us user
+
+		err := row.Scan(&us.Firstname, &us.Surname, &us.ID)
+		if err != nil {
+			fmt.Println("Error getting row", err)
+			return
+		}
+
+		tpl.Execute(w, us)
 	}
-
-	tpl.Execute(w, us)
-	}	
 }
