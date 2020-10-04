@@ -30,9 +30,9 @@ func JoinFileNameToCookie(w http.ResponseWriter, c *http.Cookie, filename string
 }
 
 // chech if a string is present in a slice of strings (for validity of images file extensions)
-func Found(xext []string, ext string) bool {
-	for _, v := range xext {
-		if v == ext {
+func Found(xs []string, s string) bool {
+	for _, v := range xs {
+		if v == s {
 			return true
 		}
 	}
@@ -67,6 +67,7 @@ func UploadImage(w http.ResponseWriter, r *http.Request) {
 		//validate image extension (see func found on line 31)
 		if !Found(exts, ext) {
 			http.Error(w, "File not an image file", http.StatusBadRequest)
+			return
 		}
 		//create hash to hash file
 		//see http://godoc.org/crypto/sha1 for examples on hashes
@@ -97,14 +98,18 @@ func UploadImage(w http.ResponseWriter, r *http.Request) {
 		c = JoinFileNameToCookie(w, c, hsfilename)
 	}
 	//split cookie on joined period
-	images := strings.Split(c.Value, "/")
+	xs := strings.Split(c.Value, "/")
+	fmt.Println(xs)
+	//trim out first value to get images since first value is the c.value
+	images := xs[1:]
+	fmt.Println(images)
 
 	tpl.Execute(w, images)
 }
 
 func main() {
 	http.HandleFunc("/upload", UploadImage)
-	http.Handle("/uploads/", http.StripPrefix("/uploads/", http.FileServer(http.Dir("uploads"))))//handle upload folders
+	http.Handle("/uploads/", http.StripPrefix("/uploads/", http.FileServer(http.Dir("uploads")))) //handle upload folders
 	http.Handle("/favicon.ico", http.NotFoundHandler())
 	http.ListenAndServe(":8080", nil)
 }
