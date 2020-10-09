@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Users</title>
+</head>
+<body>
+    <form action="/search" method="POST">
+        <input type="text" name="search"><br>
+        <input type="submit"><br><br>
+    </form>
+    
+    <div>
+        {{if .}}
+            Firstname: {{.Firstname}}<br>
+            Surname: {{.Surname}}<br>
+            ID: {{.ID}}
+        {{end}}
+    </div>
+</body>
+</html>
