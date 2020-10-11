@@ -9,9 +9,8 @@ import (
 
 //create a user struct
 type user struct {
-	Username, Firstname, Lastname string
+	Username, Firstname, Lastname, Password string
 	Age                           int
-	Password                      []byte
 }
 
 //create db variables
@@ -38,8 +37,9 @@ func init() {
 	tpl = template.Must(template.ParseFiles("index.html", "home.html", "login.html"))
 	//encrypt password for storage
 	pbs, _ := bcrypt.GenerateFromPassword([]byte("mypassword"), bcrypt.MinCost)
+	str := string(pbs)
 	//create a db with a prticular user info
-	userdb["Needrima"] = user{"Needrima", "Amirdeen", "Oyebode", 21, pbs}
+	userdb["Needrima"] = user{"Needrima", "Amirdeen", "Oyebode", str, 21}
 }
 
 func login(w http.ResponseWriter, r *http.Request) {
@@ -60,7 +60,7 @@ func login(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 		//check if password matches its encrypted hash in the db
-		err := bcrypt.CompareHashAndPassword(u.Password, []byte(pw))
+		err := bcrypt.CompareHashAndPassword([]byte(u.Password), []byte(pw))
 		if err != nil {
 			http.Error(w, "Username and/or password mismatch", http.StatusForbidden)
 			return

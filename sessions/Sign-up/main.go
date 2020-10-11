@@ -34,7 +34,7 @@ func LoggedIn(r *http.Request) bool { //to check if user is already logged in
 
 func signup(w http.ResponseWriter, r *http.Request) {
 	if LoggedIn(r) { //User cannot signup when already logged in
-		http.Redirect(w, r, "/", http.StatusSeeOther)
+		http.Redirect(w, r, "/home", http.StatusSeeOther)
 		return
 	}
 
@@ -55,7 +55,7 @@ func signup(w http.ResponseWriter, r *http.Request) {
 		//check if password already exist
 		_, ok := userdb[pw]
 		if ok {
-			http.Redirect(w, r, "/", http.StatusTemporaryRedirect)
+			http.Error(w, "Password already taken", http.StatusInternalServerError)
 			return
 		}
 		//create cookie and set cookie
@@ -78,7 +78,7 @@ func signup(w http.ResponseWriter, r *http.Request) {
 		userdb[pw] = u
 
 		//redirect back to home page after storing user info
-		http.Redirect(w, r, "/", http.StatusSeeOther)
+		http.Redirect(w, r, "/home", http.StatusSeeOther)
 		return
 	}
 
