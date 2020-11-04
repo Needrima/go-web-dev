@@ -11,8 +11,11 @@ func handle(conn net.Conn) {
 	scanner := bufio.NewScanner(conn)
 
 	for scanner.Scan() {
+		//Reading from connection
 		scantext := scanner.Text()
 		fmt.Println(scantext)
+		//Writing read text back to connection
+		fmt.Fprintf(conn, "You talk say: %s\n", scantext)
 	}
 	defer conn.Close()
 
@@ -35,3 +38,7 @@ func main() {
 		go handle(conn)
 	}
 }
+
+//open two terminals
+//run program go run main.go
+//run telnet localhost 8083 on another terminal window

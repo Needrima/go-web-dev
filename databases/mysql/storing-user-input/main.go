@@ -40,9 +40,9 @@ func main() {
 func Store(w http.ResponseWriter, r *http.Request) {
 	// to input values into database
 	if r.Method == http.MethodPost {
-		fn := r.FormValue("sname")//type varchar(20) in database
-		ln := r.FormValue("lname")//type varchar(20) in database
-		id := r.FormValue("ID")//type int in database
+		fn := r.FormValue("sname") //type varchar(20) in database
+		ln := r.FormValue("lname") //type varchar(20) in database
+		id := r.FormValue("ID")    //type int in database
 		//signup = name of table in database
 		store, err := db.Prepare(`insert into signup values('` + fn + `', '` + ln + `', ` + id + `);`)
 		if err != nil {

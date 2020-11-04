@@ -46,7 +46,7 @@ func foo(w http.ResponseWriter, r *http.Request) {
 			fmt.Println("Error creating tempfile:", err)
 		}
 		defer tmpfile.Close()
- 
+
 		tmpfile.Write(bs) //or io.Copy(tmpfile, file)
 	}
 	//write s back to the template

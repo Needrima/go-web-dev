@@ -18,7 +18,7 @@ func main() {
 		fmt.Println("Could not connect to mysql workbench:", err)
 	}
 	defer db.Close()
-	
+
 	err = db.Ping()
 	if err != nil {
 		log.Println(err)

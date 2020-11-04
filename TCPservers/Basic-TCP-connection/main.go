@@ -20,7 +20,7 @@ func main() {
 			log.Fatalln("Error connecting:", err)
 		}
 		io.WriteString(conn, "Hey!, I'm ready to listen\n")
-		fmt.Fprintln(conn, "\t\toya now i don ready to listen.")
+		fmt.Fprintln(conn, "\t\t oya now i don ready to listen.")
 		conn.Close()
 	}
 }

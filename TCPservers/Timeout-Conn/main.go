@@ -21,7 +21,7 @@ func handle(conn net.Conn) {
 	defer conn.Close()
 
 	//code will get here because a deadline has been established for the connection
-	fmt.Println("Code will get Here after 15 secs: connection timeout")
+	fmt.Println("Code got Here after 15 secs: connection timeout")
 }
 
 func main() {

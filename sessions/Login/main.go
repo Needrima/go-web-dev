@@ -10,7 +10,7 @@ import (
 //create a user struct
 type user struct {
 	Username, Firstname, Lastname, Password string
-	Age                           int
+	Age                                     int
 }
 
 //create db variables

@@ -49,7 +49,7 @@ func Search(w http.ResponseWriter, r *http.Request) {
 
 		query := `select * from signup where Firstname = ?;`
 
-		row := db.QueryRow(query, name) 
+		row := db.QueryRow(query, name)
 
 		var us user
 
