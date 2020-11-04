@@ -27,7 +27,7 @@ func WriteToOtherConns(conn net.Conn) {
 		reader := bufio.NewReader(conn)
 		msg, err := reader.ReadString('\n')
 		//if error occuered; conn is closed so break loop
-		//and send conn to closed channel ie line 47
+		//and send conn to closed channel i.e line 46
 		if err != nil {
 			break
 		}
