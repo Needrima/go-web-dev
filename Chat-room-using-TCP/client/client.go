@@ -3,6 +3,7 @@ package main
 import (
 	"bufio"
 	"fmt"
+	"github.com/gookit/color"
 	"io"
 	"log"
 	"net"
@@ -23,13 +24,14 @@ func ReadFromConnection(conn net.Conn) {
 		reader := bufio.NewReader(conn)     // read from connection
 		msg, err := reader.ReadString('\n') // get message
 
-		if err == io.EOF { //no message on connections
+		if err == io.EOF { //not reading fom connection anymore
 			conn.Close()                     //close conn
-			log.Fatalln("Connection closed") //alert connection close and exit program
+			log.Println("Connection closed") //alert connection close and exit program
+			os.Exit(1)                       //exit program to avoid infinite running of for loop
 		}
 
-		fmt.Println(msg)
-		fmt.Println("------------------------------------------------")
+		color.Green.Println(msg)
+		color.Yellow.Println("------------------------------------------------")
 	}
 }
 
@@ -38,6 +40,8 @@ func WriteToConnection(conn net.Conn, roomName string) {
 	for {
 		reader := bufio.NewReader(os.Stdin) // read from terminal
 		msg, err := reader.ReadString('\n') // get message
+
+		color.Yellow.Println("\n------------------------------------------------")
 
 		if err != nil {
 			break
@@ -51,8 +55,7 @@ func WriteToConnection(conn net.Conn, roomName string) {
 
 func main() {
 	conn, err := net.Dial("tcp", "localhost:8080") //dial conn on ":8080"
-	checkError(err, "Erorr dialing connection")    //chech err
-	defer conn.Close()
+	checkError(err, "Erorr dialing connection")    //check err
 
 	defer conn.Close() //close conn before function terminate
 	//get name
@@ -67,7 +70,7 @@ func main() {
 	welcomeMsg := fmt.Sprintf("Welcome %s, Chat with friends.\n", roomName) //notice the trailing "\n"
 	//absence of it returns an EOF error on the sever side
 	//when reading the message from the connectio
-	fmt.Println(welcomeMsg)
+	color.Cyan.Println(welcomeMsg)
 
 	go ReadFromConnection(conn)
 
