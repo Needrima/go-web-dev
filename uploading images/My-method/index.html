@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Login</title>
+</head>
+<body>
+    <div>
+        Your Images:
+       {{if .}}
+           {{range .}}                                  
+       <img src="uploads/{{.}}" alt="" width="300px">
+       {{end}}
+       {{end}}
+   </div>
+
+    <form action="/foo" method="POST" enctype="multipart/form-data">
+        <big>Upload file: </big> <input type="file" name="upload"> <br>
+        <button type="submit">Upload</button>
+    </form> <br>
+</body>
+</html>
