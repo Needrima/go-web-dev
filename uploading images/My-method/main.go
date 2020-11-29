@@ -97,10 +97,10 @@ func foo(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 	xs := strings.Split(c.Value, "/")
-	fmt.Println(xs)
+	fmt.Println("Cookie Value:", xs)
 	//trim out first value to get images since first value is the c.value
 	images := xs[1:]
-	fmt.Println(images)
+	fmt.Println("Images:", images)
 
 	tpl.Execute(w, images)
 }

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Document</title>
+</head>
+<body>
+    <h1 onclick="AJAXrequest()">Click Me</h1>
+
+    <script>
+       //document.querySelector("h1").onclick = AJAXrequest;
+
+        function AJAXrequest() {
+            var xhr = new XMLHttpRequest();
+
+            xhr.open("GET", "/foo", true);
+
+            xhr.onreadystatechange = function() {
+                if(xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+                    alert(xhr.responseText);
+                };
+            };
+
+            xhr.send();
+        };
+
+        
+    </script>
+</body>
+</html>
+<!--Google search "MDN:AJAX" to see AJAX documentation-->
