@@ -21,7 +21,7 @@ func main() {
 	//"root:demopassword@tcp(127.0.0.1:3306)/usersdb" follows the pattern
 	//"name_of_connection:password@tcp("connection_host")/database_name"
 	var err error
-	db, err = sql.Open("mysql", "root:password@tcp(127.0.0.1:3306)/usersdb")
+	db, err = sql.Open("mysql", "root:password@tcp(127.0.0.1:3306)/databasename")
 	if err != nil {
 		fmt.Println("Could not connect to mysql workbench:", err)
 	}
