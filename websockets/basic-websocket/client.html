@@ -7,8 +7,11 @@
     <h1>Websockets basics</h1>
     <div class="chat"></div>
 
-    <input type="text" id="message">
-    <button id="send">Send Message</button>
+    <div>
+        <input type="text" id="message">
+        <button id="send">Send Message</button>
+    </div>
+    
 </body>
 <script src="jquery.js"></script>
 
@@ -18,13 +21,14 @@
     window.onload = function() {
         wsURI = "ws://localhost:8080"
         sock  = new WebSocket(wsURI)
+        console.log("Attempting websocket connection")
 
         sock.onopen = function() {
             console.log("connected to "	+	wsURI);
         }
 
         sock.onclose = function(event) {
-            console.log("connection	closed	("+	event.code	+	")");
+            console.log("connection	closed	("+	event +	")");
         }
 
         sock.onmessage = function(event) {

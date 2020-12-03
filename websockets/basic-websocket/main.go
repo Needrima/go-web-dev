@@ -1,33 +1,46 @@
 package main
 
 import (
-	"fmt"
-	"io/ioutil"
-	"net"
+	"log"
+	"net/http"
+	"golang.org/gorilla/websockets"
 )
 
+var upgrader = websocket.Upgrader {
+	ReadBufferSize: 1024,
+	WriteBufferSize: 1024,
+}
+
+func Home(w http.ResponseWriter, r *http.Request) {
+	http.ServeFile(w, r, "index.html")
+}
+
+func webSocket(w http.IesponseWriter, r *http.Request) {
+	conn, err := upgrader.Upgrade(w, r, nil)
+	if err != nil {
+		log.Println("Error occured", err)
+		return
+	}
+	log.Println("Client succesfully connected")
+
+	for {
+		msgType, msg, err := conn.ReadMessage()
+		if err != nil {
+			log.Println("Error occured", err)
+		}
+		log.Println("Message from conn:", string(msg))
+
+		if err := conn.WriteMessage(msgType, msg); err != nil {
+			log.Println("Error writing back to connection")
+			return
+		}
+		log.Println("Written msg back to connection")
+
+	}
+}
+
 func main() {
-	//Get tcp address using
-	//func ResolveTCPAddr(network, address string) (*TCPAddr, error)
-	tcpAddr, err := net.ResolveTCPAddr("tcp", ":8080")
-	if err != nil {
-		fmt.Println("Error getting tcp address:", err.Error())
-		return
-	}
-
-	//create tcp connection using address
-	//func DialTCP(network string, laddr, raddr *TCPAddr) (*TCPConn, error)
-	conn, err := net.DialTCP("tcp", nil, tcpAddr)
-	if err != nil {
-		fmt.Println("Error creating connection:", err.Error())
-		return
-	}
-	defer conn.Close()
-
-	///write to connection request some header
-	conn.Write([]byte("HEAD / HTTP/1.0\r\n\r\n"))
-
-	//read from connection
-	bs, _ := ioutil.ReadAll(conn)
-	fmt.Println(string(bs))
+	http.HandleFunc("/", Home)
+	http.HandleFunc("/ws", webSocket)
+	http.ListenAndServe(":8080", nil)
 }
