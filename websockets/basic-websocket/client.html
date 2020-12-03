@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Websockets</title>
+</head>
+<body>
+    <h1>Websockets basics</h1>
+    <div class="chat"></div>
+
+    <input type="text" id="message">
+    <button id="send">Send Message</button>
+</body>
+<script src="jquery.js"></script>
+
+<script>
+    let ws;
+
+    window.onload = function() {
+        wsURI = "ws://localhost:8080"
+        sock  = new WebSocket(wsURI)
+
+        sock.onopen = function() {
+            console.log("connected to "	+	wsURI);
+        }
+
+        sock.onclose = function(event) {
+            console.log("connection	closed	("+	event.code	+	")");
+        }
+
+        sock.onmessage = function(event) {
+            $(".chat").append(event.data)
+        }
+
+        sock.onerror = function(error) {
+            console.log("Error occured: " + error)
+        }
+    };
+
+    $("#send").click(function() {
+        let msg = document.getElementById("message").value;
+        sock.send(msg)
+    })
+</script>
+</html>
