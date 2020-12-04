@@ -16,36 +16,27 @@
 <script src="jquery.js"></script>
 
 <script>
-//declare websocket(always wit ws:// protocol)
     let wsURI = "ws://localhost:8080/ws"
     let sock  = new WebSocket(wsURI)
     console.log("Attempting websocket connection")
 
-    //declare event handlers for websockets
-
-    //onopen:called when socket is connected successfully
     sock.onopen = function() {
         console.log("connected to "	+ wsURI + " successfully");
         sock.send("Hi from client")
     }
 
-    //onclose:called when socket is closed
     sock.onclose = function(event) {
         console.log("connection	closed", event);
     }
 
-    //onmessage:called when there is a new message on connection
-    //and writes message to console
     sock.onmessage = function(event) {
-        console.log(event.data)
+        $(".chat").append(event.data)
     }
 
-    //onerror:called when there is an error
     sock.onerror = function(error) {
         console.log("Error occured: " + error)
     }
 
-    //function to take care of message sent through form
     function send() {
         let msg = document.getElementById("message").value
         sock.send(msg)
