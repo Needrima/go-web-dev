@@ -6,6 +6,6 @@ The Go standard library does not have support for websockets
 
 To use websockets we need to import third-party libraries
 
-e.g: "golang.org/x/net/websocket", "github.com/gorilla/websocket"
+e.g: "golang.org/x/net/websocket", "github.com/gorilla/websocket", "github.com/googollee/go-socket.io"
 
 Also used some jquery code
