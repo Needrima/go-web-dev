@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mongodb Create</title>
+</head>
+<body>
+    <h1>Create</h1>
+
+    <form action="/create" method="POST">
+        <input type="text" name="fname" placeholder="Firstname"><br><br>
+        <input type="text" name="lname" placeholder="Lastname"><br><br>
+        <input type="text" name="sex" placeholder="Gender">
+        <input type="submit">
+    </form>
+
+    {{if .}}
+        {{.}}
+    {{end}}
+</body>
+</html>
