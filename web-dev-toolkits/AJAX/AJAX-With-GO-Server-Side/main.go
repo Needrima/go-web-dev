@@ -2,8 +2,8 @@ package main
 
 import (
 	"html/template"
-	"net/http"
 	"log"
+	"net/http"
 )
 
 func Handle(w http.ResponseWriter, r *http.Request) {

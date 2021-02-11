@@ -16,7 +16,6 @@ func (p person) Actualage(n int) int {
 }
 
 func (p person) Fullname(s string) string {
-	s = "Oyebode"
 	return s + " " + p.Name
 }
 

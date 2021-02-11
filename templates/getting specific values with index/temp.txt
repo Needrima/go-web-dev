@@ -8,6 +8,8 @@
     <link rel="stylesheet" href="">
 </head>
 <body>
-    <h1>ONE</h1>
+    {{index . 0}}
+    {{index . 2}}
+    {{index . 4}}
 </body>
 </html>

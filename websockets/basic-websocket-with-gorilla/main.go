@@ -5,6 +5,7 @@ import (
 	"log"
 	"net/http"
 )
+
 // declare upgrader struct
 var upgrader = websocket.Upgrader{
 	ReadBufferSize:  1024, // not important
@@ -26,6 +27,8 @@ func webSocket(w http.ResponseWriter, r *http.Request) {
 		log.Println("Error occured", err)
 		return
 	}
+	defer conn.Close()
+
 	log.Println("Client succesfully connected")
 
 	//read messages continuously from connetion and write message back to connetion at "client.html"
@@ -42,7 +45,6 @@ func webSocket(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 		log.Println("Written msg back to connection")
-
 	}
 }
 
