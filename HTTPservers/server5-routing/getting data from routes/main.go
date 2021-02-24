@@ -1,8 +1,8 @@
 package main
 
 import (
-	"net/http"
 	"fmt"
+	"net/http"
 )
 
 func foo(w http.ResponseWriter, r *http.Request) {

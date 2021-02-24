@@ -9,7 +9,7 @@ import (
 	"net/http"
 )
 
-type User struct {
+type User struct { //exported field in capital letters
 	First, Last, Gender string
 }
 
