@@ -31,7 +31,7 @@ func main() {
 	}
 	defer session.Close()
 
-	collection = session.DB("users").C("customers")
+	collection = session.DB("gomongo").C("go-web-dev")
 
 	http.HandleFunc("/create", Create)
 	http.HandleFunc("/read", Read)
