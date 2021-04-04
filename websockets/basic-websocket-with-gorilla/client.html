@@ -5,15 +5,16 @@
 </head>
 <body>
     <h1>Websockets basics</h1>
-    <div class="chat"></div>
 
     <div>
-        <input type="text" id="message">
+        <form action="" method="get"></form>
+        <input type="text" id="msg1" placeholder="Fisrtname">
+        <input type="text" id="msg2" placeholder="Lastname">
+        <input type="text" id="msg3" placeholder="Gender">
         <button id="send" onclick="send()">Send Message</button>
     </div>
     
 </body>
-<script src="jquery.js"></script>
 
 <script>
 //declare websocket(always wit ws:// protocol)
@@ -38,6 +39,7 @@
     //and writes message to console
     sock.onmessage = function(event) {
         console.log(event.data)
+        alert(event.data)
     }
 
     //onerror:called when there is an error
@@ -47,8 +49,13 @@
 
     //function to take care of message sent through form
     function send() {
-        let msg = document.getElementById("message").value;
-        sock.send(msg)
+        let fname = document.getElementById("msg1").value;
+        let lname = document.getElementById("msg2").value;
+        let gender = document.getElementById("msg3").value;
+
+        let person = {Fname: fname, Lname:lname, Gender:gender}
+        
+        sock.send(person)
     }
 </script>
 </html>

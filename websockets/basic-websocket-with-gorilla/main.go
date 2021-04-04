@@ -50,7 +50,7 @@ func webSocket(w http.ResponseWriter, r *http.Request) {
 
 func main() {
 	http.HandleFunc("/", Home)
-	http.Handle("/favicon.ico", http.NotFoundHandler())
+	// http.Handle("/favicon.ico", http.NotFoundHandler())
 	http.HandleFunc("/ws", webSocket)
 	http.ListenAndServe(":8080", nil)
 }

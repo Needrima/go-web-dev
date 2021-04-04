@@ -19,7 +19,7 @@ func main() {
 	}
 	defer session.Close()
 
-	collection := session.DB("users").C("customers")
+	collection := session.DB("golang").C("go_practice")
 
 	err = collection.Insert(&User{"Fawaz", "oyebode", "male"})
 	if err != nil {
