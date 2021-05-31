@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>{{.Title}}</title>
+</head>
+<body>
+
+    <div> 
+        {{.Message}} by <b>{{.Author}}</b>
+    </div><br>
+
+    <div>
+        <h2>Comments</h2>
+
+        {{range .Comments}}
+        <p>
+            {{.Comment}} by {{.Author}}
+            <a href="/reply/{{.ReplyRoute}}" style="text-decoration: none;">Reply</a>
+        </p>
+        {{end}}
+    <div>
+        <h2>Leave a comment..</h2>
+
+        <form action="{{.Path}}" method="POST">
+            <input type="text" name="author" placeholder="Name"> <br><br>
+            <textarea name="message" id="" cols="30" rows="10">Comment ...</textarea> <br><br>
+    
+            <button type="submit" style="width:100px; background-color:blue; color: white; border-radius: 4px">Comment</button>
+        </form>
+    </div>
+</body>
+</html>

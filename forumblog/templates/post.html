@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>New thread</title>
+</head>
+<body>
+
+    <form action="/new-post" method="POST">
+        <input type="text" name="author" placeholder="Name"> <br><br>
+        <input type="text" name="title" placeholder="Title of post"> <br><br>
+        <textarea name="message" id="" cols="30" rows="10">Create a post ...</textarea> <br><br>
+
+        <button type="submit" style="width:100px; background-color:blue; color: white; border-radius: 4px">Post</button>
+    </form>
+    
+
+    <script>alert({{.}})</script>
+</body>
+</html>
