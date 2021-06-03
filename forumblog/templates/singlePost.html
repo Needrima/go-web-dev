@@ -14,8 +14,8 @@
 
         {{range .Comments}}
         <p>
-            {{.Comment}} by {{.Author}}
-            <a href="/reply/{{.ReplyRoute}}" style="text-decoration: none;">Reply</a>
+            {{.Comment}} by {{.Commentor}}
+            <a href="/reply/{{.ReplyRoute}}" target="_blank" style="text-decoration: none;">Reply</a>
         </p>
         {{end}}
     <div>
@@ -25,7 +25,7 @@
             <input type="text" name="author" placeholder="Name"> <br><br>
             <textarea name="message" id="" cols="30" rows="10">Comment ...</textarea> <br><br>
     
-            <button type="submit" style="width:100px; background-color:blue; color: white; border-radius: 4px">Comment</button>
+            <input type="submit" value="Comment" style="width:100px; background-color:blue; color: white; border-radius: 4px">
         </form>
     </div>
 </body>
