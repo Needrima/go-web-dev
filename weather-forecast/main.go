@@ -42,13 +42,15 @@ func WeatherForecast(w http.ResponseWriter, r *http.Request) {
 		resp, err := http.Get(url)
 		if err != nil {
 			http.Error(w, "Invalid location or "+http.StatusText(500), 500)
-			log.Fatal("api", err)
+			log.Println("api", err)
+			return
 		}
 		defer resp.Body.Close()
 
 		bs, err := ioutil.ReadAll(resp.Body)
 		if err != nil {
-			log.Fatal("ReadAll:", err)
+			log.Println("ReadAll:", err)
+			return
 		}
 		fmt.Println(string(bs))
 
@@ -57,7 +59,8 @@ func WeatherForecast(w http.ResponseWriter, r *http.Request) {
 		var weather Weather
 		err = json.Unmarshal(bs, &weather)
 		if err != nil {
-			log.Fatal("ReadAll:", err)
+			log.Println("ReadAll:", err)
+			return
 		}
 
 		fmt.Printf("%+v\n", weather)
