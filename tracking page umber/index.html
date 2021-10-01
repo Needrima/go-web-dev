@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Document</title>
+</head>
+<body>
+    <h1>Hello world</h1>
+    {{if .}}
+    <p>Page Number: {{.}}</p>
+    {{end}}
+
+    <ul>
+        <li><a href="/next/{{next .}}">Next</a></li>
+        <li><a href="/previous/{{prev .}}">Previous</a></li>
+    </ul>
+</body>
+</html>

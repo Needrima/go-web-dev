@@ -27,7 +27,7 @@ func main() {
 	}
 	defer client.Disconnect(ctx)
 
-	database := client.Database("student-devs-blog")
+	database := client.Database("golang")
 
 	//uploadFile("./img/myimge.jpg", "newimage.jpg", database)
 	downloadFile("newimage.jpg", database)
