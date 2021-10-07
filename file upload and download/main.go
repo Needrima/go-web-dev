@@ -9,6 +9,7 @@ import (
 	"net/http"
 	"path/filepath"
 	"text/template"
+	"os"
 
 	//"time"
 
@@ -20,7 +21,8 @@ import (
 )
 
 func main() {
-	clientOptions := options.Client().ApplyURI("mongodb://localhost:27017")
+	uri := os.Getenv("atlasURI")
+	clientOptions := options.Client().ApplyURI(uri)
 
 	ctx := context.Background()
 
