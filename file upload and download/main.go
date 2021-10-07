@@ -37,10 +37,10 @@ func main() {
 
 	tpl := template.Must(template.ParseFiles("index.html"))
 
-	http.HandleFunc("/home", func(w http.ResponseWriter, r *http.Request) {
+	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		if r.Method == http.MethodPost {
-			if err := r.ParseMultipartForm(4 << 20); err != nil {
-				http.Error(w, "file exceeds 4 megabytes", 400)
+			if err := r.ParseMultipartForm(2 << 20); err != nil {
+				http.Error(w, "file exceeds 2 megabytes", 400)
 				return
 			}
 
@@ -71,10 +71,10 @@ func main() {
 
 	http.HandleFunc("/admin/check", func(w http.ResponseWriter, r *http.Request) {
 		downloadFile(database)
-		http.Redirect(w, r, "/", 303)
+		http.Redirect(w, r, "/admin/check/checkall/files/", 303)
 	})
 
-	http.Handle("/", http.FileServer(http.Dir("files")))
+	http.Handle("/admin/check/checkall/files/", http.StripPrefix("/admin/check/checkall/files", http.FileServer(http.Dir("./files"))))
 
 	http.ListenAndServe(":9090", nil)
 }
