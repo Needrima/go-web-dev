@@ -1,4 +1,4 @@
-module go-codes/code-test
+module github.com/needrima/web-code-test
 
 go 1.16
 
