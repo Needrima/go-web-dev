@@ -3,7 +3,7 @@ package main
 import (
 	"bufio"
 	"fmt"
-	"github.com/gookit/color"
+	//"github.com/gookit/color"
 	"io"
 	"log"
 	"net"
@@ -21,33 +21,33 @@ func checkError(err error, msg string) {
 func ReadFromConnection(conn net.Conn) {
 	//infinite for to run process forever
 	for {
-		reader := bufio.NewReader(conn)     // read from connection
-		msg, err := reader.ReadString('\n') // get message
+		reader := bufio.NewReader(conn)     
+		msg, err := reader.ReadString('\n') 
 
-		if err == io.EOF { //not reading fom connection anymore
-			conn.Close()                     //close conn
-			log.Println("Connection closed") //alert connection close and exit program
-			os.Exit(1)                       //exit program to avoid infinite running of for loop
+		if err == io.EOF {
+			conn.Close()                     
+			log.Println("Connection closed")
+			os.Exit(1)
 		}
 
-		color.Green.Println(msg)
-		color.Yellow.Println("------------------------------------------------")
+		fmt.Println(msg)
+		fmt.Println("------------------------------------------------")
 	}
 }
 
-//write messages through teminal to other conections
-func WriteToConnection(conn net.Conn, roomName string) {
+// reads from terminal and writes to connection
+func WriteToConnection(conn net.Conn, name string) {
 	for {
 		reader := bufio.NewReader(os.Stdin) // read from terminal
 		msg, err := reader.ReadString('\n') // get message
 
-		color.Yellow.Println("\n------------------------------------------------")
+		fmt.Println("\n------------------------------------------------")
 
 		if err != nil {
 			break
 		}
 
-		msg = fmt.Sprintf("%s:- %s\n", roomName, strings.Trim(msg, " \r\n"))
+		msg = fmt.Sprintf("%s:- %s\n", name, strings.Trim(msg, " \r\n"))
 
 		conn.Write([]byte(msg))
 	}
@@ -62,17 +62,16 @@ func main() {
 
 	fmt.Print("Enter a room name: ")
 
-	reader := bufio.NewReader(os.Stdin)        //read username from terminal
-	roomName, err := reader.ReadString('\n')   // assign to variable
-	checkError(err, "Could not get roomname")  //chech err
-	roomName = strings.Trim(roomName, " \r\n") // trim out whitespaces from name
+	reader := bufio.NewReader(os.Stdin)        
+	name, err := reader.ReadString('\n')  
+	checkError(err, "Could not get name")  
+	roomName = strings.Trim(name, " \r\n")
 
-	welcomeMsg := fmt.Sprintf("Welcome %s, Chat with friends.\n", roomName) //notice the trailing "\n"
-	//absence of it returns an EOF error on the sever side
-	//when reading the message from the connectio
-	color.Cyan.Println(welcomeMsg)
+	welcomeMsg := fmt.Sprintf("Welcome %s, Chat with friends.\n", name) 
+	
+	fmt.Println(welcomeMsg)
 
 	go ReadFromConnection(conn)
 
-	WriteToConnection(conn, roomName)
+	WriteToConnection(conn, name)
 }

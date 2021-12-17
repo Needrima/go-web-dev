@@ -26,28 +26,23 @@ func WriteToOtherConns(conn net.Conn) {
 	for {
 		reader := bufio.NewReader(conn)
 		msg, err := reader.ReadString('\n')
-		//if error occured; conn is closed so break loop
-		//and send conn to closed channel i.e line 46
+		
 		if err != nil {
 			break
 		}
-		//if there is a msg
-		//range over connetions map
-		//item is basically each connection in map for every iteration
+		
 		for item := range Conns {
 			if conn != item { //every other conn apart from the one writing the message
 				item.Write([]byte(msg))
 			}
 		}
 	}
-	//loop doesn't run
-	//connection is closed
-	//send to close conn channel
+
 	closedConn <- conn
 }
 
 func main() {
-	// Create a  listener
+
 	listener, err := net.Listen("tcp", ":8080")
 	checkError(err, "Couldn't create listener")
 	defer listener.Close() //close listener before function terminate
@@ -57,9 +52,9 @@ func main() {
 		for {
 			conn, err := listener.Accept()
 			checkError(err, "Error connecting to listener")
-			//send connection to newConns channel
+			
 			newConns <- conn
-			//add conn to connections
+			
 			Conns[conn] = true
 
 			defer conn.Close()
@@ -69,19 +64,19 @@ func main() {
 	for {
 		select {
 		case conn := <-newConns:
-			//launching a new gorroutine to increase performance
-			//since func WriteToOtherConns is not printing any message
+
 			go WriteToOtherConns(conn)
+
 		case conn := <-closedConn:
-			// received on close channel
+			
 			for item := range Conns {
-				//if close conn is in conns stop the loop
-				//and delete the conn from conns
-				if conn == item {
+				
+				if item == conn {
+					delete(Conns, item) //delete connection from connections in database
 					break
 				}
+
 			}
-			delete(Conns, conn) //inbuilt delete function to delete from maps
 		}
 	}
 }
