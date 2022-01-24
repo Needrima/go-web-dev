@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Searchbox</title>
+    <link rel="stylesheet" href="./public/jquery-ui.min.css">
+    <link rel="stylesheet" href="./public/jquery-ui.structure.min.css">
+    <link rel="stylesheet" href="./public/jquery-ui.theme.min.css">
+</head>
+<body>
+    <input type="text" placeholder="Enter username">
+
+    
+    <script src="./public/jquery.js"></script>
+    <script src="./public/jquery-ui.min.js"></script>
+
+    <script>
+        let src = [];
+
+        let input = document.querySelector("input");
+
+        input.oninput = AJAXrequest;
+
+        function AJAXrequest() {
+            console.log(input.value);
+
+            src.splice(0, src.length) // clear out source to prevent values storing mutiple times
+
+            let xhr = new XMLHttpRequest();
+
+            xhr.open("POST", "/foo", true);
+
+            xhr.onreadystatechange = function() {
+                if(xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+                    let res = JSON.parse(xhr.responseText);
+
+                    // range over response and push values to src
+                    res.forEach(val => {
+                       src.push(val)
+                    });
+                };
+            };
+
+            xhr.send(input.value);
+        };
+
+        $( "input" ).autocomplete({
+	        source: src,
+        });
+
+    </script>
+</body>
+</html>

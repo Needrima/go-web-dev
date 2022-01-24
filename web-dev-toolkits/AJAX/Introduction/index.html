@@ -4,15 +4,18 @@
     <title>Document</title>
 </head>
 <body>
-    <h1 onclick="AJAXrequest()">Click Me</h1>
+    <h1>Click Me</h1>
+
+    <input type="text" id="ipt">
 
     <script>
-       //document.querySelector("h1").onclick = AJAXrequest;
+       document.querySelector("h1").onclick = AJAXrequest;
+       document.querySelector("#ipt").oninput = AJAXrequest;
 
         function AJAXrequest() {
             var xhr = new XMLHttpRequest();
 
-            xhr.open("GET", "text.txt", true);
+            xhr.open("GET", "text.html", true);
 
             xhr.onreadystatechange = function() {
                 if(xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
