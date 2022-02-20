@@ -1,51 +1,56 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Searchbox</title>
-    <link rel="stylesheet" href="./public/jquery-ui.min.css">
-    <link rel="stylesheet" href="./public/jquery-ui.structure.min.css">
-    <link rel="stylesheet" href="./public/jquery-ui.theme.min.css">
+    <title>Autocomplete search bar</title>
+
+    <style>
+        input {
+            width: 300px;
+            height: 50px;
+            font-size: 22px;
+        }
+    </style>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.structure.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.theme.min.css">
 </head>
 <body>
-    <input type="text" placeholder="Enter username">
+    <input type="text" placeholder="Search for something">
 
-    
-    <script src="./public/jquery.js"></script>
-    <script src="./public/jquery-ui.min.js"></script>
-
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
     <script>
-        let src = [];
+        alert("Public folder successfully served!!");
+        
+        let src = ["one", "two", "three"];
 
-        let input = document.querySelector("input");
+        let input = document.querySelector('input'); 
 
-        input.oninput = AJAXrequest;
+        input.addEventListener('input', () => {
+            src.splice(0, src.length);
 
-        function AJAXrequest() {
-            console.log(input.value);
+            var xhr = new XMLHttpRequest();
 
-            src.splice(0, src.length) // clear out source to prevent values storing mutiple times
-
-            let xhr = new XMLHttpRequest();
-
-            xhr.open("POST", "/foo", true);
+            xhr.open("POST", "/input", true);
 
             xhr.onreadystatechange = function() {
                 if(xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
-                    let res = JSON.parse(xhr.responseText);
+                    let resp = JSON.parse(xhr.responseText);
+                    console.log("Response:", resp)
 
-                    // range over response and push values to src
-                    res.forEach(val => {
-                       src.push(val)
+                    resp.data.forEach(val => {
+                        src.push(val)
                     });
                 };
-            };
-
-            xhr.send(input.value);
-        };
-
-        $( "input" ).autocomplete({
-	        source: src,
+            };   
+            console.log("Source:", src)
+            xhr.send(input.value); 
         });
+
+        $('input').autocomplete({
+            source: src,
+        })
 
     </script>
 </body>

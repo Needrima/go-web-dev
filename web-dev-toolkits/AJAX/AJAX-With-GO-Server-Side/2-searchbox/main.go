@@ -1,84 +1,76 @@
 package main
 
 import (
-	"context"
 	"encoding/json"
 	"fmt"
-	"html/template"
 	"io/ioutil"
 	"log"
 	"net/http"
 	"os"
 
-	"go.mongo.org/mongo-driver/bson"
-	"go.mongo.org/mongo-driver/mongo"
-	"go.mongo.org/mongo-driver/mongo/primitive"
-	// "go.mongo.org/mongo-driver/mongo/readpref"
-	"go.mongo.org/mongo-driver/mongo/options"
+	"github.com/gorilla/mux"
+
+	mgo "gopkg.in/mgo.v2"
+	"gopkg.in/mgo.v2/bson"
 )
 
 type autoComplete struct {
-	Data []string `bson:"data, omitempty"`
+	Data []string `json:"data", bson:"data"`
 }
 
-var testCollection *mongo.Collection
+var testCollection *mgo.Collection
 
-func init() {
-	clientOptions := options.Client().ApplyURI("mongodb://locahost:27017")
-
-	connection, err := mongo.Connect(clientOptions)
+func main() {
+	session, err := mgo.Dial("mongodb://localhost:27017")
 	if err != nil {
-		log.Printf("Error connecting to mongoDB server: %w\n", err)
-		os.Exit(1)
+		log.Fatal("Session:", err)
 	}
 
-	defer connection.Disconnect(context.TODO())
-
-	if err := connection.Ping(); err != nil {
+	if err := session.Ping(); err != nil {
 		log.Printf("Pinging DB failed: %w\n", err)
 		os.Exit(1)
 	}
 
-	db := connection.Database("gocode")
+	fmt.Println("Successfully connected to mongoDB")
 
-	testCollection = db.Collection("test")
-}
+	db := session.DB("gocode")
 
-func main() {
-	tpl := template.Must(template.ParseFiles("index.html"))
+	testCollection = db.C("test")
 
-	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		tpl.Execute(w, nil)
+	router := mux.NewRouter()
+
+	router.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		http.ServeFile(w, r, "./index.html")
 	})
 
-	http.HandleFunc("/foo", func(w http.ResponseWriter, r *http.Request) {
+	router.HandleFunc("/input", func(w http.ResponseWriter, r *http.Request) {
+		hex := "6205295f1eea720fd0d0ef68"
+		id := bson.ObjectIdHex(hex)
+
+		fmt.Println("ObjectId:", id)
+
 		var aut autoComplete
 
-		id := primitive.ObjectIdFromHex("6205295f1eea720fd0d0ef68")
-
-		if err := testCollection.FindOne(
-			context.TODO(),
-			bson.M{"_id": id},
-		).Decode(&aut); err != nil {
-			log.Println("ERROR FINDING RESULT:", err)
+		if err := testCollection.Find(bson.M{"_id": id}).One(&aut); err != nil {
+			log.Println("Error finding document:", err)
 			return
 		}
 
-		fmt.Println(aut.Data)
-		searchResults := aut.Data
+		fmt.Printf("Document: %v, Data: %v\n", aut, aut.Data)
 
 		bs, err := ioutil.ReadAll(r.Body)
 		if err != nil {
-			fmt.Println("Request body reading error:", err)
+			log.Println("Error reading request body:", err)
 			return
 		}
 
 		fmt.Println("Request body:", string(bs))
 
-		json.NewEncoder(w).Encode(searchResults)
+		json.NewEncoder(w).Encode(aut)
 	})
 
-	http.Handle("/public/", http.StripPrefix("/public/", http.FileServer(http.Dir("./public"))))
+	fs := http.FileServer(http.Dir("./public"))
+	router.Handle("/public/", http.StripPrefix("/public/", fs))
 
-	http.ListenAndServe(":8080", nil)
+	log.Fatal(http.ListenAndServe(":8080", router))
 }
