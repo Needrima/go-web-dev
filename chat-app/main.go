@@ -2,110 +2,70 @@ package main
 
 import (
 	"fmt"
-	"io/ioutil"
 	"log"
 	"net/http"
-	"strings"
 
 	"github.com/gorilla/websocket"
-	gubrak "github.com/novalagung/gubrak/v2"
 )
 
-type M map[string]interface{}
+var (
+	upgrader = websocket.Upgrader{
+		ReadBufferSize:  1024,
+		WriteBufferSize: 1024,
+	}
 
-const MESSAGE_NEW_USER = "New User"
-const MESSAGE_CHAT = "Chat"
-const MESSAGE_LEAVE = "Leave"
+	conns = map[*websocket.Conn]bool{}
+)
 
-var connections = make([]*WebSocketConnection, 0)
-
-type SocketPayload struct {
-	Message string
+type Chat struct {
+	Type string `json:"type"`
+	Name string `json:"name"`
+	Msg  string `json:"msg"`
 }
 
-type SocketResponse struct {
-	From    string
-	Type    string
-	Message string
-}
+func ChatHandler(w http.ResponseWriter, r *http.Request) {
+	conn, err := upgrader.Upgrade(w, r, nil)
+	if err != nil {
+		log.Println(err)
+		return
+	}
 
-type WebSocketConnection struct {
-	*websocket.Conn
-	Username string
+	conns[conn] = true
+
+	go func(conn *websocket.Conn) {
+		for {
+			var c Chat
+			err := conn.ReadJSON(&c)
+			if err != nil {
+				fmt.Println("could not read from connection: deleting connection", err)
+				delete(conns, conn)
+				return
+			}
+
+			if c.Type == "new user" {
+				fmt.Printf("new user name: %v joined\n", c.Name)
+			} else if c.Type == "new message" {
+				fmt.Printf("Received message: %v\n", c.Msg)
+			}
+
+			for eachConn := range conns {
+				if err := eachConn.WriteJSON(c); err != nil {
+					fmt.Println("could not write to connection: deleting connection", err)
+					delete(conns, eachConn)
+					continue
+				}
+			}
+		}
+	}(conn)
 }
 
 func main() {
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		content, err := ioutil.ReadFile("index.html")
-		if err != nil {
-			http.Error(w, "Could not open requested file", http.StatusInternalServerError)
-			return
-		}
-
-		fmt.Fprintf(w, "%s", content)
+		http.ServeFile(w, r, "index.html")
 	})
 
-	http.HandleFunc("/ws", func(w http.ResponseWriter, r *http.Request) {
-		currentGorillaConn, err := websocket.Upgrade(w, r, w.Header(), 1024, 1024)
-		if err != nil {
-			http.Error(w, "Could not open websocket connection", http.StatusBadRequest)
-		}
+	http.HandleFunc("/chat", ChatHandler)
 
-		username := r.URL.Query().Get("username")
-		currentConn := WebSocketConnection{Conn: currentGorillaConn, Username: username}
-		connections = append(connections, &currentConn)
-
-		go handleIO(&currentConn, connections)
-	})
-
-	fmt.Println("Server starting at :8080")
-	http.ListenAndServe(":8080", nil)
-}
-
-func handleIO(currentConn *WebSocketConnection, connections []*WebSocketConnection) {
-	defer func() {
-		if r := recover(); r != nil {
-			log.Println("ERROR", fmt.Sprintf("%v", r))
-		}
-	}()
-
-	broadcastMessage(currentConn, MESSAGE_NEW_USER, "")
-
-	for {
-		payload := SocketPayload{}
-		err := currentConn.ReadJSON(&payload)
-		if err != nil {
-			if strings.Contains(err.Error(), "websocket: close") {
-				broadcastMessage(currentConn, MESSAGE_LEAVE, "")
-				ejectConnection(currentConn)
-				return
-			}
-
-			log.Println("ERROR", err.Error())
-			continue
-		}
-
-		broadcastMessage(currentConn, MESSAGE_CHAT, payload.Message)
-	}
-}
-
-func ejectConnection(currentConn *WebSocketConnection) {
-	filtered := gubrak.From(connections).Reject(func(each *WebSocketConnection) bool {
-		return each == currentConn
-	}).Result()
-	connections = filtered.([]*WebSocketConnection)
-}
-
-func broadcastMessage(currentConn *WebSocketConnection, kind, message string) {
-	for _, eachConn := range connections {
-		if eachConn == currentConn {
-			continue
-		}
-
-		eachConn.WriteJSON(SocketResponse{
-			From:    currentConn.Username,
-			Type:    kind,
-			Message: message,
-		})
-	}
+	fmt.Println("visit localhost:8090...")
+	log.Fatal(http.ListenAndServe(":8090", nil))
 }

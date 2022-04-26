@@ -1,122 +1,91 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>WebSocket</title>
-
-    <style type="text/css">
-        .form {
-            position: fixed;
-            left: 0;
-            bottom: 0;
-            right: 0;
-            background-color: #f9f9f9;
-            border-top: 1px solid #78b8ef;
-            padding: 5px 10px;
-        }
-        .form .placeholder,
-        .form .input-message,
-        .form button {
-            display: block;
-            margin-bottom: 5px;
-        }
-        .form .input-message {
-            padding: 7px;
-            border: 1px solid #ecebeb;
-            border-radius: 4px;
-            width: -webkit-fill-available;
-        }
-        .form button {
-            width: 100%;
-            color: white;
-            padding: 7px 10px;
-            border-radius: 4px;
-            background-color: #78b8ef;
-            border: 1px solid #5a9ed8;
-        }
-        .container {
-            margin-bottom: 50px;
-        }
-        .container p {
-            display: block;
-        }
-    </style>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat app</title>
 </head>
 <body>
-    <div class="container"></div>
-
-    <div class="form">
-        <form onsubmit="app.doSendMessage(); return false;">
-            <div class="placeholder">
-                <label>Hello <b class="username"></b>. Say something:</label>
-            </div>
-            <input class="input-message" type="text" placeholder="Enter message">
-            <button type="submit">Send</button>
-        </form>
+    <h1 style="text-align: center;">Simple websocket</h1>
+    <div>
+        <input type="text" placeholder="message" id="msg">
+        <button id="send">Send message</button>
     </div>
 
-    <script type="text/javascript">
-        var app = {}
-        app.ws = undefined
-        app.container = undefined
+    <div id="messages">
+        
+    </div>
 
-        app.print = function (message) {
-            var el = document.createElement("p")
-            el.innerHTML = message
-            app.container.append(el)
-        }
+    <script>
+        let name = prompt("Enter your name:");
 
-        app.doSendMessage = function () {
-            var messageRaw = document.querySelector('.input-message').value
-            app.ws.send(JSON.stringify({
-                Message: messageRaw
-            }));
+        let wsURL = 'ws://localhost:8090/chat';
+        let ws = new WebSocket(wsURL);            
 
-            var message = '<b>me</b>: ' + messageRaw
-            app.print(message)
+        // Connection opened
+        ws.addEventListener('open', function (event) {
+            console.log('connection open')
+            ws.send(JSON.stringify({
+                type: "new user",
+                name: name,
+                msg: ""
+            }))
+            console.log("message sent for new user")
+        });
 
-            document.querySelector('.input-message').value = ''
-        }
-
-        app.init = function () {
-            if (!(window.WebSocket)) {
-                alert('Your browser does not support WebSocket')
-                return
-            }
-
-            var name = prompt('Enter your name please:') || "No name"
-            document.querySelector('.username').innerText = name
-
-            app.container = document.querySelector('.container')
-
-            app.ws = new WebSocket("ws://localhost:8080/ws?username=" + name)
-
-            app.ws.onopen = function() {
-                var message = '<b>me</b>: connected'
-                app.print(message)
-            }
-
-            app.ws.onmessage = function (event) {
-                var res = JSON.parse(event.data)
-
-                var messsage = ''
-                if (res.Type === 'New User') {
-                    message = 'User <b>' + res.From + '</b>: connected'
-                } else if (res.Type === 'Leave') {
-                    message = 'User <b>' + res.From + '</b>: disconnected'
-                } else {
-                    message = '<b>' + res.From + '</b>: ' + res.Message 
+        // Listen for messages
+        ws.addEventListener('message', function (event) {
+    //     <div id="messages">
+    //          <div>
+    //                <span>Name:</span> <span>Message</span>
+    //          </div>
+    //     </div>
+            let data = JSON.parse(event.data)
+            if (data.type === "new user") {
+                // console.log('new user with name:', data.name);
+                if (data.name === name) {
+                    alert("you joined the chat")
+                }else {
+                    alert(`${data.name} joined the chat`)
                 }
+            }else if (data.type === "new message") {
+                let messages = document.getElementById('messages');
+                let messageDiv = document.createElement('div');
+                let nameSpan = document.createElement('span');
+                let msgSpan = document.createElement('span');
+                msgSpan.textContent = data.msg
 
-                app.print(message)
-            }
+                if (data.name === name) {
+                    nameSpan.textContent = 'You: ';
+                    messageDiv.appendChild(nameSpan);
+                    messageDiv.appendChild(msgSpan);
+                    messages.appendChild(messageDiv);
+                } else {
+                    nameSpan.textContent = `${data.name}: `;
+                    messageDiv.appendChild(nameSpan);
+                    messageDiv.appendChild(msgSpan);
+                    messages.appendChild(messageDiv);
+                }
+            }               
+        });
 
-            app.ws.onclose = function () {
-                var message = '<b>me</b>: disconnected'
-                app.print(message)
-            }
-        }
+        // connection close
+        ws.addEventListener('close', function(event) {
+            console.log('connection close with event', event)
+        });
 
-        window.onload = app.init
+        document.getElementById('send').addEventListener('click', () => {
+            console.log("send clicked")
+            let msg = document.getElementById('msg').value;
+            console.log("Message:", msg)
+            ws.send(JSON.stringify({
+                type: "new message",
+                name: name,
+                msg: msg
+            }))
+        })
+
     </script>
 </body>
 </html>
