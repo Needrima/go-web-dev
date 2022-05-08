@@ -26,11 +26,11 @@ func WriteToOtherConns(conn net.Conn) {
 	for {
 		reader := bufio.NewReader(conn)
 		msg, err := reader.ReadString('\n')
-		
+
 		if err != nil {
 			break
 		}
-		
+
 		for item := range Conns {
 			if conn != item { //every other conn apart from the one writing the message
 				item.Write([]byte(msg))
@@ -52,9 +52,9 @@ func main() {
 		for {
 			conn, err := listener.Accept()
 			checkError(err, "Error connecting to listener")
-			
+
 			newConns <- conn
-			
+
 			Conns[conn] = true
 
 			defer conn.Close()
@@ -68,9 +68,9 @@ func main() {
 			go WriteToOtherConns(conn)
 
 		case conn := <-closedConn:
-			
+
 			for item := range Conns {
-				
+
 				if item == conn {
 					delete(Conns, item) //delete connection from connections in database
 					break

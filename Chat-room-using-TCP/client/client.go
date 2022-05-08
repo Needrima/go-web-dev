@@ -21,11 +21,11 @@ func checkError(err error, msg string) {
 func ReadFromConnection(conn net.Conn) {
 	//infinite for to run process forever
 	for {
-		reader := bufio.NewReader(conn)     
-		msg, err := reader.ReadString('\n') 
+		reader := bufio.NewReader(conn)
+		msg, err := reader.ReadString('\n')
 
 		if err == io.EOF {
-			conn.Close()                     
+			conn.Close()
 			log.Println("Connection closed")
 			os.Exit(1)
 		}
@@ -62,13 +62,13 @@ func main() {
 
 	fmt.Print("Enter a room name: ")
 
-	reader := bufio.NewReader(os.Stdin)        
-	name, err := reader.ReadString('\n')  
-	checkError(err, "Could not get name")  
+	reader := bufio.NewReader(os.Stdin)
+	name, err := reader.ReadString('\n')
+	checkError(err, "Could not get name")
 	roomName = strings.Trim(name, " \r\n")
 
-	welcomeMsg := fmt.Sprintf("Welcome %s, Chat with friends.\n", name) 
-	
+	welcomeMsg := fmt.Sprintf("Welcome %s, Chat with friends.\n", name)
+
 	fmt.Println(welcomeMsg)
 
 	go ReadFromConnection(conn)

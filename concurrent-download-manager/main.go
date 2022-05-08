@@ -12,7 +12,7 @@ import (
 type Download struct {
 	URL        string // url for file to download
 	TargetPath string // path to download file to
-	Sections   int // amount of sections to run concurrently
+	Sections   int    // amount of sections to run concurrently
 }
 
 func main() {
@@ -26,7 +26,7 @@ func main() {
 		fmt.Printf("error occured downloading file: %v\n", err)
 		return
 	}
-	
+
 	fmt.Println("Download successful")
 }
 
@@ -79,11 +79,11 @@ func (d *Download) Do() error {
 			sections[i][1] = contentLength - 1
 		}
 	}
-	
+
 	var wg sync.WaitGroup
 	for idx, section := range sections {
 		wg.Add(1)
-		go func(i int, s [2]int){
+		go func(i int, s [2]int) {
 			defer wg.Done()
 			if err := d.downloadSection(i, s); err != nil {
 				panic(err)
@@ -120,7 +120,7 @@ func (d Download) downloadSection(idx int, section [2]int) error {
 	defer resp.Body.Close()
 
 	fmt.Printf("gotten %v bytes from section %v range %v\n", resp.Header.Get("Content-Length"), idx, section)
-	
+
 	bs, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		return err
