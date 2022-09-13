@@ -13,6 +13,8 @@ import (
 
 var jwtKey = []byte("my_jwt_key")
 
+var blackListedToken = map[string]bool{}
+
 var users = map[string]string{
 	"user1": "password1",
 	"user2": "password2",
@@ -131,7 +133,8 @@ func main() {
 	http.HandleFunc("/home", Home)
 	http.HandleFunc("/refresh", Refresh)
 
-	log.Fatal(http.ListenAndServe(":9090", nil))
+	fmt.Println("listening on port 9087")
+	log.Fatal(http.ListenAndServe(":9087", nil))
 }
 
 func IsLoggedIn(r *http.Request) (loggedIn bool, claims *Claims) {
@@ -161,5 +164,24 @@ func IsLoggedIn(r *http.Request) (loggedIn bool, claims *Claims) {
 		return false, nil
 	}
 
+	if _, ok := blackListedToken[tokenString]; ok {
+		log.Println("blacklisted token")
+		return false, nil
+	}
+
 	return true, c
+}
+
+func Logout(w http.ResponseWriter, r *http.Request) {
+	loggedIn, _ := IsLoggedIn(r)
+	if !loggedIn {
+		fmt.Println("not logged in")
+		return
+	}
+
+	cookie, _ := r.Cookie("token")
+	tokenString := cookie.Value
+	blackListedToken[tokenString] = true
+	cookie.MaxAge = 1
+	http.SetCookie(w, cookie)
 }
