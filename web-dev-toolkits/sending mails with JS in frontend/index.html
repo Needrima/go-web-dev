@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secret Agents</title>
+</head>
+<body>   
+    <form>
+        <input type="text" name="fname" id="fname" placeholder="Enter Firstname"> <br><br>
+        <input type="email" name="email" id="email" placeholder="Enter email"> <br><br>
+        <textarea name="Your message" id="message" cols="30" rows="10"></textarea>
+        <input type="submit" value="Send">
+    </form>
+    <script src="https://smtpjs.com/v3/smtp.js"></script>
+
+    <script>
+        const form = document.querySelector('form')
+        const sendMail = (e) => {
+            e.preventDefault();
+            const email = document.querySelector('#email').value,
+                    msg = document.querySelector('#message').value,
+                    name = document.querySelector('#fname').value;
+
+            Email.send({
+                SecureToken : "cc3908f4-5f70-4c94-968c-103d6336b4ee",
+                To : 'oyebodeamirdeen@gmail.com',
+                From : email,
+                Subject : "Newsletter subscription",
+                Body : msg
+            }).then(
+                message => alert(message)
+            );
+        }
+
+            form.addEventListener('submit', sendMail)
+    </script>
+    
+</body>
+</html>
