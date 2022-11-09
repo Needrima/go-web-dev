@@ -30,7 +30,7 @@ func main() {
 
 	message := headerMessage + "\r\n" + body
 
-	auth := smtp.PlainAuth("", "oyebodeamirdeen@gmail.com", "blqgjjmsewlqzylb", smtpHost)
+	auth := smtp.PlainAuth("", "oyebodeamirdeen@gmail.com", "", smtpHost)
 
 	// Sending email.
 	if err := smtp.SendMail(smtpHost+":"+smtpPort, auth, from, []string{to}, []byte(message)); err != nil {
