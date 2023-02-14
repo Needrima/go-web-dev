@@ -1,5 +1,5 @@
-//Base63 enoding can be used to encode strings and just like hashes, the output
-//will always be the same so fargo fmt the input is same
+// Base63 enoding can be used to encode strings and just like hashes, the output
+// will always be the same so fargo fmt the input is same
 package main
 
 import (

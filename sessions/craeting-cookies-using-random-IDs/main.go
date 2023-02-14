@@ -1,4 +1,4 @@
-//Package "github.com/satori/go.uuid" is a third party package that has functionalities for generating random values for cookies
+// Package "github.com/satori/go.uuid" is a third party package that has functionalities for generating random values for cookies
 package main
 
 import (

@@ -1,4 +1,4 @@
-//server side implementation of TCP chat
+// server side implementation of TCP chat
 package main
 
 import (
@@ -14,7 +14,7 @@ var (
 	//to store all connections
 )
 
-//to check errors
+// to check errors
 func checkError(err error, msg string) {
 	if err != nil {
 		log.Fatal(msg+":", err)

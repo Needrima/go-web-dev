@@ -17,7 +17,7 @@ func checkError(err error, msg string) {
 	}
 }
 
-//read messages from other connections and print to terminal
+// read messages from other connections and print to terminal
 func ReadFromConnection(conn net.Conn) {
 	//infinite for to run process forever
 	for {

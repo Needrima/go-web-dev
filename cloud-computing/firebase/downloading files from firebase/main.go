@@ -9,6 +9,7 @@ import (
 	firebase "firebase.google.com/go"
 	"github.com/google/uuid"
 	"google.golang.org/api/option"
+    "cloud.google.com/go/storage"
 )
 
 const (
@@ -38,25 +39,31 @@ func main() {
         return
     }
 
-    objectHandle := bucketHandle.Object("casual.jpg")
+	objectHandle := bucketHandle.Object("filename")
+	attrs, err := objectHandle.Attrs(context.Background())
+	if err != nil {
+		fmt.Printf("error getting object attributes: %v\n", err)
+		return
+	}
+	
+    f, err := os.Create(attrs.Name)
+	if err != nil {
+		fmt.Printf("error creating file to store image from firebase: %v\n", err)
+		return
+	}
+	defer f.Close()
 
-    writer := objectHandle.NewWriter(context.Background())
-    // very important to set this metadata
-    id := uuid.New()
-    writer.ObjectAttrs.Metadata = map[string]string{"firebaseStorageDownloadTokens": id.String()} 
-        defer writer.Close()
+	reader, err := objectHandle.NewReader(context.Background())
+	if err != nil {
+		fmt.Printf("error creating reader from storage object: %v\n", err)
+		return
+	}
+	defer reader.Close()
 
-    f, err := os.Open("casual.jpg")
-    if err != nil {
-        fmt.Println("error opening casual.jpg:", err)
-        return
-    }
-    defer f.Close()
-    
-    if _, err := io.Copy(writer, f); err != nil {
-        fmt.Println("error writing to cloud storage wroter:", err)
-        return
-    }
-    
-    fmt.Println("all is well")
+	if _, err := io.Copy(f, reader); err != nil {
+		fmt.Println("error writing to cloud storage wroter:", err)
+		return
+	}
+
+	fmt.Println("image download successful, cheers")
 }

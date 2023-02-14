@@ -14,7 +14,7 @@ type user struct {
 	Username, Firstname, Othername string
 }
 
-//Both database variables below are global scope so they can be called in different functions
+// Both database variables below are global scope so they can be called in different functions
 var sessiondb = map[string]string{} // maps session id to user id
 var userdb = map[string]user{}      // maps user id to user
 

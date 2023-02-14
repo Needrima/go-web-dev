@@ -6,9 +6,9 @@ import (
 	"net/http"
 )
 
-//to read from a cookie, we use func set cookie from the net/http package
+// to read from a cookie, we use func set cookie from the net/http package
 // func SetCookie(w http.ResponseWriter, cookie *Cookie)
-//type cookie is a struct that implemets the stringer method
+// type cookie is a struct that implemets the stringer method
 func setmultiplecookies(w http.ResponseWriter, r *http.Request) {
 	http.SetCookie(w, &http.Cookie{
 		Name:  "Cookie1",
@@ -28,7 +28,7 @@ func setmultiplecookies(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintln(w, "Cookies has been set. Check dev tools/applications/cookies to view cookie")
 }
 
-//to read cookies, we user r.Cookie(cookie name)
+// to read cookies, we user r.Cookie(cookie name)
 func readmultiplecookies(w http.ResponseWriter, r *http.Request) {
 	cookie1, err := r.Cookie("Cookie1")
 	if err != nil {

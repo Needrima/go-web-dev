@@ -7,21 +7,21 @@ import (
 	"text/template"
 )
 
-//create a user struct
+// create a user struct
 type user struct {
 	Username, Firstname, Lastname string
 	Age                           int
 	Password                      []byte
 }
 
-//create db variables
+// create db variables
 var userdb = map[string]user{}
 var sessiondb = map[string]string{}
 
-//create template variable
+// create template variable
 var tpl *template.Template
 
-//function to check if logged in
+// function to check if logged in
 func loggedin(r *http.Request) bool {
 	cookie, err := r.Cookie("session")
 	if err != nil {
