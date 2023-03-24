@@ -71,6 +71,8 @@ const show = async (device) => {
     }
 }
 
+show('camera');
+
 clientLocal.ontrack = (track, stream) => {
     track.onunmute = () => { // if there is a track
         sub_video.srcObject = stream;

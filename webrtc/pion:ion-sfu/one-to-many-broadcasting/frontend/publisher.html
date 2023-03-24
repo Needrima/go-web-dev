@@ -17,17 +17,17 @@
 <body>
     <div>
         <div class="text-center bg-dark p-2">
-            <button id="btn_cam" type="button" class="btn btn-lg btn-outline-light" onclick="show('camera')">Camera</button>
+            <!-- <button id="btn_cam" type="button" class="btn btn-lg btn-outline-light" onclick="show('camera')">Camera</button> -->
             <button id="btn_screen" type="button" class="btn btn-lg btn-outline-light" onclick="show('screen')">Screen</button>
         </div>
 
-        <video autoplay muted controls id="pub_video" style="width: 100%"></video>
+        <video autoplay id="pub_video" style="width: 100%"></video>
 
         <div id="media-controls" class="hidden text-center mt-3">
             <i class="bi bi-mic-fill display-4 mx-2 bg-dark text-light p-3 rounded-circle" id="mic-on-icon" onclick="toggleMicrophone()"></i>
             <i class="bi bi-mic-mute-fill display-4 mx-2 bg-dark text-light p-3 rounded-circle hidden" id="mic-off-icon" onclick="toggleMicrophone()"></i>
-            <i class="bi bi-camera display-4 mx-2 bg-dark text-light p-3 rounded-circle" id="cam-on-icon" onclick="toggleCamera()"></i>
-            <i class="bi bi-camera-fill display-4 mx-2 bg-dark text-light p-3 rounded-circle hidden" id="cam-off-icon" onclick="toggleCamera()"></i>
+            <i class="bi bi-camera-video display-4 mx-2 bg-dark text-light p-3 rounded-circle" id="cam-on-icon" onclick="toggleCamera()"></i>
+            <i class="bi bi-camera-video-off-fill display-4 mx-2 bg-dark text-light p-3 rounded-circle hidden" id="cam-off-icon" onclick="toggleCamera()"></i>
         </div>
     </div>
 
