@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebRTC one to many broacast</title>
+
+    <link rel="stylesheet" href="./style.css">
+
+    <!--Bootsrtap cdn-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+     
+    <!--Bootstrap icons CDN-->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+</head>
+<body>
+    <div>
+        <div class="text-center bg-dark p-2">
+            <button id="btn_cam" type="button" class="btn btn-lg btn-outline-light" onclick="show('camera')">Camera</button>
+            <button id="btn_screen" type="button" class="btn btn-lg btn-outline-light" onclick="show('screen')">Screen</button>
+        </div>
+
+        <video autoplay muted controls id="pub_video" style="width: 100%"></video>
+
+        <div id="media-controls" class="hidden text-center mt-3">
+            <i class="bi bi-mic-fill display-4 mx-2 bg-dark text-light p-3 rounded-circle" id="mic-on-icon" onclick="toggleMicrophone()"></i>
+            <i class="bi bi-mic-mute-fill display-4 mx-2 bg-dark text-light p-3 rounded-circle hidden" id="mic-off-icon" onclick="toggleMicrophone()"></i>
+            <i class="bi bi-camera display-4 mx-2 bg-dark text-light p-3 rounded-circle" id="cam-on-icon" onclick="toggleCamera()"></i>
+            <i class="bi bi-camera-fill display-4 mx-2 bg-dark text-light p-3 rounded-circle hidden" id="cam-off-icon" onclick="toggleCamera()"></i>
+        </div>
+    </div>
+
+    <!--ion-sfu cdn-->
+    <script src="https://unpkg.com/ion-sdk-js@1.5.5/dist/ion-sdk.min.js"></script>
+    <script src="https://unpkg.com/ion-sdk-js@1.5.5/dist/json-rpc.min.js"></script>
+
+    <!--Bootstrap cdn-->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+
+    <!--custom scripts-->
+    <script src="./index.js"></script>
+</body>
+</html>
